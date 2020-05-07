@@ -1,13 +1,57 @@
-import React from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Keyboard,
+} from "react-native";
 
 const Login = (props) => {
+  const [user, setUser] = useState({ username: "", password: "" });
+
+  const handleUsernameChange = (text) => {
+    setUser({ ...user, username: text });
+  };
+
+  const handlePasswordChange = (text) => {
+    setUser({ ...user, password: text });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Keyboard.dismiss();
+    axios
+      .post("https://collection-manager-2020.herokuapp.com/login", user)
+      .then((res) => {
+        console.log(`LOGIN res: ${res.data.token}`);
+      })
+      .catch((err) => {
+        console.log(`LOGIN err: ${err}`);
+      });
+
+    setUser({ username: "", password: "" });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Collection Manager</Text>
-      <TextInput style={styles.inputs} placeholder="Username" />
-      <TextInput style={styles.inputs} placeholder="Password" />
-      <Button title="Sign In" />
+      <TextInput
+        style={styles.inputs}
+        placeholder="Username"
+        value={user.username}
+        onChangeText={handleUsernameChange}
+      />
+      <TextInput
+        style={styles.inputs}
+        placeholder="Password"
+        value={user.password}
+        onChangeText={handlePasswordChange}
+        secureTextEntry={true}
+      />
+      <Button title="Sign In" onPress={handleSubmit} />
     </View>
   );
 };
