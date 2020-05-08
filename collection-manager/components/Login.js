@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 
-const Login = (props) => {
+const Login = ({ navigation }) => {
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleUsernameChange = (text) => {
@@ -27,6 +27,9 @@ const Login = (props) => {
       .post("https://collection-manager-2020.herokuapp.com/login", user)
       .then((res) => {
         console.log(`LOGIN res: ${res.data.token}`);
+        if (res.data.token) {
+          navigation.navigate("Profile");
+        }
       })
       .catch((err) => {
         console.log(`LOGIN err: ${err}`);
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+    backgroundColor: "#212635",
   },
   inputs: {
     backgroundColor: "white",
