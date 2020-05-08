@@ -2,17 +2,34 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
-import Routes from "./components/Routes";
-import { NativeRouter } from "react-router-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
     <View style={styles.container}>
-      <Login />
-      {/* <Profile /> */}
-      {/* <NativeRouter>
-        <Routes />
-      </NativeRouter> */}
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerStyle: { backgroundColor: "#476C9B" },
+              headerTintColor: "#fff",
+            }}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              headerStyle: { backgroundColor: "#476C9B" },
+              headerTintColor: "#fff",
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
