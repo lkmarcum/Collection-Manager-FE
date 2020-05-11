@@ -1,11 +1,36 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { Directions } from "react-native-gesture-handler";
 
 const Profile = ({ activeUser }) => {
+  const [collections, setCollections] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://collection-manager-2020.herokuapp.com/collections/owner/${activeUser.id}`
+      )
+      .then((res) => {
+        setCollections(res.data.collections);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Profile Page token: {activeUser.token}</Text>
+      {/* <Text style={styles.header}>Profile Page token: {activeUser.token}</Text> */}
+
+      {collections.map((collection) => (
+        <TouchableOpacity style={styles.collectionContainer}>
+          <View style={styles.collection}>
+            <Text style={styles.text}>{collection.title}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };
@@ -15,11 +40,30 @@ const styles = StyleSheet.create({
     color: "white",
   },
   container: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    height: "100%",
     backgroundColor: "#212635",
+  },
+  collection: {
+    height: 150,
+    width: 150,
+    borderWidth: 1,
+    borderColor: "white",
+    borderRadius: 5,
+    // marginTop: 40,
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 30,
+    paddingTop: 20,
+  },
+  collectionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    height: 150,
+    marginTop: 40,
   },
 });
 
