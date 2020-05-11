@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { View, Text, StyleSheet } from "react-native";
 
-const Profile = (props) => {
+const Profile = ({ activeUser }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Profile Page</Text>
+      <Text style={styles.header}>Profile Page token: {activeUser.token}</Text>
     </View>
   );
 };

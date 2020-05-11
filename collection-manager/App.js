@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-export default function App() {
+export default function App(props) {
   const Stack = createStackNavigator();
+  const [activeUser, setActiveUser] = useState({ id: "", token: "" });
 
   return (
     <View style={styles.container}>
@@ -14,20 +15,28 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Login"
-            component={Login}
             options={{
               headerStyle: { backgroundColor: "#476C9B" },
               headerTintColor: "#fff",
             }}
-          />
+          >
+            {(props) => (
+              <Login
+                {...props}
+                setActiveUser={setActiveUser}
+                activeUser={activeUser}
+              />
+            )}
+          </Stack.Screen>
           <Stack.Screen
             name="Profile"
-            component={Profile}
             options={{
               headerStyle: { backgroundColor: "#476C9B" },
               headerTintColor: "#fff",
             }}
-          />
+          >
+            {(props) => <Profile {...props} activeUser={activeUser} />}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </View>
