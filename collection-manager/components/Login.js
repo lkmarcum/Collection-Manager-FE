@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, setActiveUser, activeUser }) => {
   const [user, setUser] = useState({ username: "", password: "" });
 
   const handleUsernameChange = (text) => {
@@ -28,9 +28,13 @@ const Login = ({ navigation }) => {
       .then((res) => {
         console.log(`LOGIN res: ${res.data.token}`);
         if (res.data.token) {
+          setActiveUser({ id: res.data.id, token: res.data.token });
           navigation.navigate("Profile");
         }
       })
+      // .then(() => {
+      //   navigation.navigate("Profile");
+      // })
       .catch((err) => {
         console.log(`LOGIN err: ${err}`);
       });
