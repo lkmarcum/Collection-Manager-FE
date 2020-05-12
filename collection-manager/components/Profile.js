@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { Directions } from "react-native-gesture-handler";
 
-const Profile = ({ activeUser }) => {
+const Profile = ({ activeUser, setActiveCollection, navigation }) => {
   const [collections, setCollections] = useState([]);
 
   useEffect(() => {
@@ -20,12 +20,20 @@ const Profile = ({ activeUser }) => {
       });
   }, []);
 
+  const selectCollection = (id) => {
+    setActiveCollection(id);
+    navigation.navigate("Collection");
+  };
+
   return (
     <View style={styles.container}>
       {/* <Text style={styles.header}>Profile Page token: {activeUser.token}</Text> */}
 
       {collections.map((collection) => (
-        <TouchableOpacity style={styles.collectionContainer}>
+        <TouchableOpacity
+          style={styles.collectionContainer}
+          onPress={() => selectCollection(collection.id)}
+        >
           <View style={styles.collection}>
             <Text style={styles.text}>{collection.title}</Text>
           </View>
