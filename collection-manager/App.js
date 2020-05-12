@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import Collection from "./components/Collection";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 export default function App(props) {
   const Stack = createStackNavigator();
   const [activeUser, setActiveUser] = useState({ id: "", token: "" });
+  const [activeCollection, setActiveCollection] = useState();
 
   return (
     <View style={styles.container}>
@@ -35,7 +37,24 @@ export default function App(props) {
               headerTintColor: "#fff",
             }}
           >
-            {(props) => <Profile {...props} activeUser={activeUser} />}
+            {(props) => (
+              <Profile
+                {...props}
+                activeUser={activeUser}
+                setActiveCollection={setActiveCollection}
+              />
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Collection"
+            options={{
+              headerStyle: { backgroundColor: "#476C9B" },
+              headerTintColor: "#fff",
+            }}
+          >
+            {(props) => (
+              <Collection {...props} activeCollection={activeCollection} />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
