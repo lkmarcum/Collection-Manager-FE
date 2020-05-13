@@ -9,7 +9,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 export default function App(props) {
   const Stack = createStackNavigator();
   const [activeUser, setActiveUser] = useState({ id: "", token: "" });
-  const [activeCollection, setActiveCollection] = useState();
+  const [activeCollection, setActiveCollection] = useState({
+    id: "",
+    title: "",
+    media_type: "",
+  });
 
   return (
     <View style={styles.container}>

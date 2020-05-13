@@ -8,10 +8,10 @@ const Collection = ({ activeCollection }) => {
   useEffect(() => {
     axios
       .get(
-        `https://collection-manager-2020.herokuapp.com/movies/collection/${activeCollection}`
+        `https://collection-manager-2020.herokuapp.com/collections/${activeCollection.media_type}/${activeCollection.id}`
       )
       .then((res) => {
-        setCollectionList(res.data.movies);
+        setCollectionList(res.data.items);
       })
       .catch((err) => {
         console.log(err);

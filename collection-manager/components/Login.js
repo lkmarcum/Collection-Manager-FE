@@ -28,6 +28,7 @@ const Login = ({ navigation, setActiveUser, activeUser }) => {
       .then((res) => {
         console.log(`LOGIN res: ${res.data.token}`);
         if (res.data.token) {
+          console.log(`LOGIN id: ${res.data.id}`);
           setActiveUser({ id: res.data.id, token: res.data.token });
           navigation.navigate("Profile");
         }
