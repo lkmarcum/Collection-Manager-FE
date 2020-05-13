@@ -13,15 +13,19 @@ const Profile = ({ activeUser, setActiveCollection, navigation }) => {
         `https://collection-manager-2020.herokuapp.com/collections/owner/${activeUser.id}`
       )
       .then((res) => {
-        setCollections(res.data.collections);
+        setCollections(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const selectCollection = (id) => {
-    setActiveCollection(id);
+  const selectCollection = (collection) => {
+    setActiveCollection({
+      id: collection.id,
+      title: collection.title,
+      media_type: collection.media_type,
+    });
     navigation.navigate("Collection");
   };
 
@@ -32,7 +36,7 @@ const Profile = ({ activeUser, setActiveCollection, navigation }) => {
       {collections.map((collection) => (
         <TouchableOpacity
           style={styles.collectionContainer}
-          onPress={() => selectCollection(collection.id)}
+          onPress={() => selectCollection(collection)}
         >
           <View style={styles.collection}>
             <Text style={styles.text}>{collection.title}</Text>
