@@ -39,6 +39,7 @@ export default function App(props) {
             options={{
               headerStyle: { backgroundColor: "#476C9B" },
               headerTintColor: "#fff",
+              title: "Your Collections",
             }}
           >
             {(props) => (
@@ -54,6 +55,7 @@ export default function App(props) {
             options={{
               headerStyle: { backgroundColor: "#476C9B" },
               headerTintColor: "#fff",
+              title: activeCollection.title,
             }}
           >
             {(props) => (
