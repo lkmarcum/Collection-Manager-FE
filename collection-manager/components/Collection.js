@@ -19,13 +19,44 @@ const Collection = ({ activeCollection }) => {
   }, []);
 
   return (
-    <View>
-      {/* <Text>Collection Page</Text> */}
+    <View style={styles.container}>
       {collectionList.map((item) => (
-        <Text>{item.title}</Text>
+        <View style={styles.lineItem}>
+          <Text style={styles.item}>{item.title}</Text>
+          <Text style={styles.genre}>{item.genre}</Text>
+        </View>
       ))}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    // justifyContent: "space-evenly",
+    height: "100%",
+    backgroundColor: "#212635",
+    paddingTop: 20,
+  },
+  item: {
+    color: "white",
+    fontSize: 25,
+  },
+  genre: {
+    color: "white",
+    fontSize: 18,
+  },
+  lineItem: {
+    marginBottom: 20,
+    paddingLeft: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingRight: 10,
+    alignItems: "center",
+  },
+});
 
 export default Collection;

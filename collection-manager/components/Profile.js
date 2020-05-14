@@ -10,7 +10,7 @@ const Profile = ({ activeUser, setActiveCollection, navigation }) => {
   useEffect(() => {
     axios
       .get(
-        `https://collection-manager-2020.herokuapp.com/collections/owner/${activeUser.id}`
+        `https://collection-manager-2020.herokuapp.com/collections/${activeUser.id}`
       )
       .then((res) => {
         setCollections(res.data);
