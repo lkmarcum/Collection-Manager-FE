@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Collection from "./components/Collection";
+import AddMovie from "./components/AddMovie";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -60,6 +61,18 @@ export default function App(props) {
           >
             {(props) => (
               <Collection {...props} activeCollection={activeCollection} />
+            )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="AddMovie"
+            options={{
+              headerStyle: { backgroundColor: "#476C9B" },
+              headerTintColor: "#fff",
+              title: "Add Movie",
+            }}
+          >
+            {(props) => (
+              <AddMovie {...props} activeCollection={activeCollection} />
             )}
           </Stack.Screen>
         </Stack.Navigator>
