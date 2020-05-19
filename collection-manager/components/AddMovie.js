@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
-import { RNCamera } from "react-native-camera";
+import BarcodeScanner from "./BarcodeScanner";
+// import { RNCamera } from "react-native-camera";
 
-const AddMovie = ({ activeCollection }) => {
+const AddMovie = ({ activeCollection, barcode, navigation }) => {
+  const [showCamera, setShowCamera] = useState(false);
+
   // const onBarcodeRead = (e) => {
   //   alert(`Barcode value is ${e.data}, barcode type is ${e.type}`);
   // };
 
+  const openScanner = () => {
+    navigation.navigate("Scanner");
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Add Movie</Text>
-      <TouchableOpacity style={styles.scanButton}>
+      <TouchableOpacity style={styles.scanButton} onPress={openScanner}>
         <Text style={styles.scanText}>Scan barcode</Text>
       </TouchableOpacity>
+      <Text>{barcode}</Text>
     </View>
   );
 };

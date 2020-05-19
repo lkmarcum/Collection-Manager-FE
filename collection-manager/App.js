@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Profile from "./components/Profile";
 import Collection from "./components/Collection";
 import AddMovie from "./components/AddMovie";
+import BarcodeScanner from "./components/BarcodeScanner";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -15,6 +16,7 @@ export default function App(props) {
     title: "",
     media_type: "",
   });
+  const [barcode, setBarcode] = useState("");
 
   return (
     <View style={styles.container}>
@@ -72,8 +74,21 @@ export default function App(props) {
             }}
           >
             {(props) => (
-              <AddMovie {...props} activeCollection={activeCollection} />
+              <AddMovie
+                {...props}
+                activeCollection={activeCollection}
+                barcode={barcode}
+              />
             )}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Scanner"
+            options={{
+              headerStyle: { backgroundColor: "#476C9B" },
+              headerTintColor: "#fff",
+            }}
+          >
+            {(props) => <BarcodeScanner {...props} setBarcode={setBarcode} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

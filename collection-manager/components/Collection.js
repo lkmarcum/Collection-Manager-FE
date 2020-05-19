@@ -35,7 +35,7 @@ const Collection = ({ activeCollection, navigation }) => {
         </TouchableOpacity>
       </View>
       {collectionList.map((item) => (
-        <View style={styles.lineItem}>
+        <View style={styles.lineItem} key={item.id}>
           <Text style={styles.item}>{item.title}</Text>
           <Text style={styles.genre}>{item.genre}</Text>
         </View>
