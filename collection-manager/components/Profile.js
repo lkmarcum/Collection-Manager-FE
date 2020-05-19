@@ -37,6 +37,7 @@ const Profile = ({ activeUser, setActiveCollection, navigation }) => {
         <TouchableOpacity
           style={styles.collectionContainer}
           onPress={() => selectCollection(collection)}
+          key={collection.id}
         >
           <View style={styles.collection}>
             <Text style={styles.text}>{collection.title}</Text>
