@@ -43,6 +43,8 @@ const Login = ({ navigation, setActiveUser, activeUser }) => {
     setUser({ username: "", password: "" });
   };
 
+  // TODO - Add loading spinner/animation while login request waits for backend response
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Collection Manager</Text>
