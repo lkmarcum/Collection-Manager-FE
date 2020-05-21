@@ -16,10 +16,38 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
   const [showCamera, setShowCamera] = useState(false);
   const [movieTitle, setMovieTitle] = useState("");
   const [genre, setGenre] = useState("");
+  const [movie, setMovie] = useState({ title: "", year: "", genre: "" });
 
-  // const onBarcodeRead = (e) => {
-  //   alert(`Barcode value is ${e.data}, barcode type is ${e.type}`);
-  // };
+  useEffect(() => {
+    if (barcode.length !== "") {
+      axios
+        .get(`https://api.upcitemdb.com/prod/trial/lookup?upc=${barcode}`)
+        .then((res) => {
+          setMovieTitle(
+            res.data.items[0].title.split(/[[(]/, 1)[0].slice(0, -1)
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [barcode]);
+
+  const searchTitle = (e) => {
+    e.preventDefault();
+    axios
+      .get(`http://www.omdbapi.com/?apikey=c0db7475&t=${movieTitle}`)
+      .then((res) => {
+        setMovie({
+          title: res.data.Title,
+          year: res.data.Year,
+          genre: res.data.Genre,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const openScanner = () => {
     navigation.navigate("Scanner");
@@ -35,7 +63,16 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
         <Text style={styles.scanText}>Scan barcode</Text>
       </TouchableOpacity>
       <Text>{barcode}</Text>
-      <TextInput
+      <Text>{movieTitle}</Text>
+      <Button title="Search" onPress={searchTitle} />
+
+      <View>
+        <Text>{movie.title}</Text>
+        <Text>{movie.year}</Text>
+        <Text>{movie.genre}</Text>
+      </View>
+
+      {/* <TextInput
         style={styles.inputs}
         placeholder="Title"
         value={movieTitle}
@@ -53,7 +90,7 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
         <Picker.Item label="Sci-Fi" value="Sci-Fi" />
         <Picker.Item label="Sports" value="Sports" />
         <Picker.Item label="Thriller" value="Thriller" />
-      </Picker>
+      </Picker> */}
     </View>
   );
 };
