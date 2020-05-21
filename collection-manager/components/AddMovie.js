@@ -8,6 +8,7 @@ import {
   Button,
   TextInput,
   Picker,
+  Image,
 } from "react-native";
 import BarcodeScanner from "./BarcodeScanner";
 // import { RNCamera } from "react-native-camera";
@@ -16,10 +17,52 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
   const [showCamera, setShowCamera] = useState(false);
   const [movieTitle, setMovieTitle] = useState("");
   const [genre, setGenre] = useState("");
+  const [movie, setMovie] = useState({
+    title: "",
+    year: "",
+    genre: "",
+    cast: "",
+    director: "",
+    plot: "",
+    poster: "",
+    ratings: [],
+  });
 
-  // const onBarcodeRead = (e) => {
-  //   alert(`Barcode value is ${e.data}, barcode type is ${e.type}`);
-  // };
+  useEffect(() => {
+    if (barcode.length !== "") {
+      axios
+        .get(`https://api.upcitemdb.com/prod/trial/lookup?upc=${barcode}`)
+        .then((res) => {
+          setMovieTitle(
+            res.data.items[0].title.split(/[[(]/, 1)[0].slice(0, -1)
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [barcode]);
+
+  const searchTitle = (e) => {
+    e.preventDefault();
+    axios
+      .get(`http://www.omdbapi.com/?apikey=c0db7475&t=${movieTitle}`)
+      .then((res) => {
+        setMovie({
+          title: res.data.Title,
+          year: res.data.Year,
+          genre: res.data.Genre,
+          cast: res.data.Actors,
+          director: res.data.Director,
+          plot: res.data.Plot,
+          poster: res.data.Poster,
+          ratings: res.data.Ratings,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const openScanner = () => {
     navigation.navigate("Scanner");
@@ -34,26 +77,24 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
       <TouchableOpacity style={styles.scanButton} onPress={openScanner}>
         <Text style={styles.scanText}>Scan barcode</Text>
       </TouchableOpacity>
-      <Text>{barcode}</Text>
-      <TextInput
-        style={styles.inputs}
-        placeholder="Title"
-        value={movieTitle}
-        onChangeText={handleTitleChange}
-      />
-      <Picker
-        selectedValue={genre}
-        onValueChange={(itemValue, itemIndex) => setGenre(itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Action" value="Action" />
-        <Picker.Item label="Comedy" value="Comedy" />
-        <Picker.Item label="Drama" value="Drama" />
-        <Picker.Item label="Romance" value="Romance" />
-        <Picker.Item label="Sci-Fi" value="Sci-Fi" />
-        <Picker.Item label="Sports" value="Sports" />
-        <Picker.Item label="Thriller" value="Thriller" />
-      </Picker>
+      <Text style={styles.scanText}>{barcode}</Text>
+      <Text style={styles.scanText}>{movieTitle}</Text>
+      <Button title="Search" onPress={searchTitle} />
+
+      <View>
+        <Image style={styles.image} source={{ uri: movie.poster }} />
+        <Text style={styles.scanText}>{movie.title}</Text>
+        <Text style={styles.scanText}>{movie.year}</Text>
+        <Text style={styles.scanText}>{movie.genre}</Text>
+        <Text style={styles.scanText}>{movie.cast}</Text>
+        <Text style={styles.scanText}>{movie.director}</Text>
+        <Text style={styles.scanText}>{movie.plot}</Text>
+        {movie.ratings.map((rating) => (
+          <Text style={styles.scanText} key={rating.Source}>
+            {rating.Source}: {rating.Value}
+          </Text>
+        ))}
+      </View>
     </View>
   );
 };
@@ -91,6 +132,10 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 3,
     padding: 5,
+  },
+  image: {
+    height: 180,
+    width: 120,
   },
 });
 

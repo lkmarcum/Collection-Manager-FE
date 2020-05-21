@@ -88,7 +88,13 @@ export default function App(props) {
               headerTintColor: "#fff",
             }}
           >
-            {(props) => <BarcodeScanner {...props} setBarcode={setBarcode} />}
+            {(props) => (
+              <BarcodeScanner
+                {...props}
+                setBarcode={setBarcode}
+                barcode={barcode}
+              />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
