@@ -12,7 +12,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 
 const BarcodeScanner = ({ setBarcode, barcode, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  // const [type, setType] = useState(Camera.Constants.Type.back);
   const [modalVisible, setModalVisible] = useState(false);
   const [scanned, setScanned] = useState(false);
 
@@ -58,52 +58,26 @@ const BarcodeScanner = ({ setBarcode, barcode, navigation }) => {
   };
 
   const submitBarcode = () => {
+    setModalVisible(false);
     navigation.pop();
   };
 
   return (
     <View style={{ flex: 1 }}>
-      <Modal animationType="slide" transparent={false} visible={modalVisible}>
-        <View>
-          <Text>Barcode scanned:</Text>
-          <Text>{barcode}</Text>
-          <TouchableOpacity style={styles.scanButton} onPress={submitBarcode}>
-            <Text>Continue</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.scanButton} onPress={scanAgain}>
-            <Text>Scan again</Text>
-          </TouchableOpacity>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.modal}>
+          <Text style={styles.modalText}>Barcode scanned:</Text>
+          <Text style={styles.modalText}>{barcode}</Text>
+          <View style={styles.modalButtons}>
+            <TouchableOpacity style={styles.scanButton} onPress={submitBarcode}>
+              <Text style={styles.buttonText}>Continue</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.scanButton} onPress={scanAgain}>
+              <Text style={styles.buttonText}>Scan again</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
-      {/* <Camera style={{ flex: 1 }} type={type} onBarCodeScanned={barcodeScanned}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "transparent",
-            flexDirection: "row",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              flex: 0.1,
-              alignSelf: "flex-end",
-              alignItems: "center",
-            }}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}
-          >
-            <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
-              {" "}
-              Flip{" "}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Camera> */}
       <View
         style={{
           flex: 1,
@@ -115,13 +89,6 @@ const BarcodeScanner = ({ setBarcode, barcode, navigation }) => {
           onBarCodeScanned={scanned ? undefined : barcodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
-
-        {/* {scanned && (
-          <Button
-            title={"Tap to Scan Again"}
-            onPress={() => setScanned(false)}
-          />
-        )} */}
       </View>
     </View>
   );
@@ -142,6 +109,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#3B84E6",
     padding: 10,
     borderRadius: 5,
+    width: 90,
+    alignItems: "center",
+  },
+  modal: {
+    height: "35%",
+    marginTop: "50%",
+    alignItems: "center",
+    backgroundColor: "#212635",
+    marginLeft: 40,
+    marginRight: 40,
+    borderRadius: 10,
+    paddingTop: 35,
+  },
+  modalText: {
+    color: "white",
+    fontSize: 30,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "white",
   },
 });
 
