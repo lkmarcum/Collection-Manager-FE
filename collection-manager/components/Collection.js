@@ -25,6 +25,16 @@ const Collection = ({ activeCollection, navigation }) => {
   //     });
   // }, []);
 
+  useEffect(() => {
+    AsyncStorage.getItem("myMovieCollection", (err, result) => {
+      // console.log(JSON.parse(result));
+      if (result) {
+        const newResult = JSON.parse(result);
+        setCollectionList(newResult.collection);
+      }
+    });
+  }, []);
+
   const clickAdd = () => {
     if (activeCollection.media_type === "movies") {
       navigation.navigate("AddMovie");
