@@ -1,27 +1,51 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  AsyncStorage,
+} from "react-native";
 
 const Collection = ({ activeCollection, navigation }) => {
   const [collectionList, setCollectionList] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(
-        `https://collection-manager-2020.herokuapp.com/collections/${activeCollection.media_type}/${activeCollection.id}`
-      )
-      .then((res) => {
-        setCollectionList(res.data.items);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://collection-manager-2020.herokuapp.com/collections/${activeCollection.media_type}/${activeCollection.id}`
+  //     )
+  //     .then((res) => {
+  //       setCollectionList(res.data.items);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const clickAdd = () => {
     if (activeCollection.media_type === "movies") {
       navigation.navigate("AddMovie");
     }
+  };
+
+  const myMovies = {
+    collection: [
+      { title: "Movie 1", genre: "Genre 1" },
+      { title: "Movie 2", genre: "Genre 2" },
+    ],
+  };
+
+  const setMovies = () => {
+    AsyncStorage.setItem("myMovieCollection", JSON.stringify(myMovies), () => {
+      AsyncStorage.getItem("myMovieCollection", (err, result) => {
+        // console.log(JSON.parse(result));
+        const newResult = JSON.parse(result);
+        setCollectionList(newResult.collection);
+      });
+    });
   };
 
   return (
@@ -31,11 +55,13 @@ const Collection = ({ activeCollection, navigation }) => {
           <Text style={styles.plusText}>+</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>&#10003;</Text>
+          <Text style={styles.buttonText} onPress={setMovies}>
+            &#10003;
+          </Text>
         </TouchableOpacity>
       </View>
       {collectionList.map((item) => (
-        <View style={styles.lineItem} key={item.id}>
+        <View style={styles.lineItem} key={item.title}>
           <Text style={styles.item}>{item.title}</Text>
           <Text style={styles.genre}>{item.genre}</Text>
         </View>
