@@ -7,10 +7,12 @@ import {
   Button,
   StyleSheet,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 
 const Login = ({ navigation, setActiveUser, activeUser }) => {
   const [user, setUser] = useState({ username: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleUsernameChange = (text) => {
     setUser({ ...user, username: text });
@@ -23,6 +25,7 @@ const Login = ({ navigation, setActiveUser, activeUser }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     Keyboard.dismiss();
+    setLoading(true);
     axios
       .post("https://collection-manager-2020.herokuapp.com/login", user)
       .then((res) => {
@@ -30,6 +33,7 @@ const Login = ({ navigation, setActiveUser, activeUser }) => {
         if (res.data.token) {
           console.log(`LOGIN id: ${res.data.id}`);
           setActiveUser({ id: res.data.id, token: res.data.token });
+          setLoading(false);
           navigation.navigate("Profile");
         }
       })
@@ -62,6 +66,9 @@ const Login = ({ navigation, setActiveUser, activeUser }) => {
         secureTextEntry={true}
       />
       <Button title="Sign In" onPress={handleSubmit} />
+      {loading && (
+        <ActivityIndicator size="large" color="white" style={styles.spinner} />
+      )}
     </View>
   );
 };
@@ -88,6 +95,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 3,
     padding: 5,
+  },
+  spinner: {
+    marginTop: 20,
   },
 });
 
