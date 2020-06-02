@@ -78,7 +78,13 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
         <Text style={styles.scanText}>Scan barcode</Text>
       </TouchableOpacity>
       <Text style={styles.scanText}>{barcode}</Text>
-      <Text style={styles.scanText}>{movieTitle}</Text>
+      {/* <Text style={styles.scanText}>{movieTitle}</Text> */}
+      <TextInput
+        style={styles.inputs}
+        placeholder="Movie title"
+        value={movieTitle}
+        onChangeText={handleTitleChange}
+      />
       <Button title="Search" onPress={searchTitle} />
 
       <View>
@@ -136,6 +142,15 @@ const styles = StyleSheet.create({
   image: {
     height: 180,
     width: 120,
+  },
+  inputs: {
+    backgroundColor: "white",
+    color: "black",
+    width: 200,
+    marginBottom: 20,
+    height: 40,
+    borderRadius: 3,
+    padding: 5,
   },
 });
 
