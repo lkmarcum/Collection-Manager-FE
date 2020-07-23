@@ -29,7 +29,7 @@ const AddMovie = ({ activeCollection, barcode, navigation }) => {
   });
 
   useEffect(() => {
-    if (barcode.length !== "") {
+    if (barcode !== "") {
       axios
         .get(`https://api.upcitemdb.com/prod/trial/lookup?upc=${barcode}`)
         .then((res) => {
